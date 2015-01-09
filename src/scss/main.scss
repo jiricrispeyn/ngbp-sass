@@ -10,7 +10,7 @@
  * project should be imported as the rest are just wasting space.
  */
 
-@import '../../vendor/bootstrap/less/bootstrap.less';
+@import '../../vendor/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
 
 
 /**
@@ -18,7 +18,7 @@
  * definitions in our imported stylesheets.
  */
 
-@import 'variables.less';
+@import 'globals/variables';
 
 
 /**
@@ -69,7 +69,7 @@ h2 {
 
 .navbar {
   margin-top: 20px;
-  
+
   small {
     font-size: 60%;
   }
@@ -98,13 +98,13 @@ h2 {
       margin-left: 20px;
 
       a, a:visited {
-        color: @gray-light;
+        color: $gray-light;
         text-decoration: none;
         font-size: 40px;
-        .transition( 250ms ease-in-out );
+        @include transition( 250ms ease-in-out );
 
         &:hover {
-          color: @gray;
+          color: $gray;
         }
       }
     }
@@ -114,10 +114,10 @@ h2 {
 
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
- * all the submodules and components we are using. 
+ * all the submodules and components we are using.
  *
  * TODO: In a later version of this boilerplate, I'd like to automate this.
  */
 
-@import '../app/home/home.less';
+@import '../app/home/home.scss';
 

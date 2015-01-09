@@ -31,7 +31,7 @@ around: [Twitter Bootstrap](http://getbootstrap.com),
 [Angular UI](http://angular-ui.github.io),
 [Angular Bootstrap](http://angular-ui.github.io/bootstrap),
 [Font Awesome](http://fortawesome.github.com/Font-Awesome), and
-[LESS](http://lesscss.org). Lastly, it contains a sophisticated
+[SCSS](http://sass-lang.com). Lastly, it contains a sophisticated
 [Grunt](http://gruntjs.org)-based build system to ensure maximum productivity.
 All you have to do is clone it and start coding!
 
@@ -49,7 +49,7 @@ These are:
   involvement from the developer. It should do what needs to be done, while
   staying out of the way. Components should end up tested, linted, compiled,
   and minified, ready for use in a production environment.
-- Integration with popular tools like Bower, Karma, and LESS.
+- Integration with popular tools like Bower, Karma, and SASS.
 - *Encourages* test-driven development. It's the only way to code.
 - A directory structure that is cogent, meaningful to new team members, and
   supporting of the above points.
@@ -82,8 +82,8 @@ ng-boilerplate/
   |  |  |- <static files>
   |  |- common/
   |  |  |- <reusable code>
-  |  |- less/
-  |  |  |- main.less
+  |  |- scss/
+  |  |  |- main.scss
   |- vendor/
   |  |- angular-bootstrap/
   |  |- bootstrap/
@@ -254,8 +254,8 @@ changes:
 * `delta:html` - When `src/index.html` changes, it is compiled as a Grunt
   template, so script names, etc., are dynamically replaced with the correct
   values configured dynamically by Grunt.
-* `delta:less` - When any `*.less` file within `src/` changes, the
-  `src/less/main.less` file is linted and copied into
+* `delta:scss` - When any `*.scss` file within `src/` changes, the
+  `src/scss/main.scss` file is linted and copied into
   `build/assets/ng-boilerplate.css`.
 * `delta:jssrc` - When any JavaScript file within `src/` that does not end in
   `.spec.js` changes, all JavaScript sources are linted, all unit tests are run,
