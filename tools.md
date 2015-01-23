@@ -41,7 +41,7 @@ By default, several packages are required for the build process to work; so when
 you first start with `ngBoilerplate` you have to tell NPM to install the
 packages; this is covered in detail in the [main README](README.md). Some of
 the required packages are Grunt build tasks (see below), while others are
-command-line tools either we (or the build system) need, like Karma, Grunt, and
+command-line tools either we (or the build system) need, like Grunt, and
 Bower.
 
 Don't worry about knowing Node.js in order to use `ngBoilerplate`; Grunt is
@@ -130,7 +130,6 @@ installed from NPM and configured as above:
 $ grunt clean
 $ grunt html2js
 $ grunt jshint
-$ grunt karma:continuous
 $ grunt concat
 $ grunt ngmin:dist
 $ grunt uglify
