@@ -11,7 +11,7 @@ Install Node.js and then:
 ```sh
 $ git clone git://github.com/joshdmiller/ng-boilerplate
 $ cd ng-boilerplate
-$ sudo npm -g install grunt-cli karma bower
+$ sudo npm -g install grunt-cli bower
 $ npm install
 $ bower install
 $ grunt watch
@@ -49,7 +49,7 @@ These are:
   involvement from the developer. It should do what needs to be done, while
   staying out of the way. Components should end up tested, linted, compiled,
   and minified, ready for use in a production environment.
-- Integration with popular tools like Bower, Karma, and SASS.
+- Integration with popular tools like Bower, and SASS.
 - *Encourages* test-driven development. It's the only way to code.
 - A directory structure that is cogent, meaningful to new team members, and
   supporting of the above points.
@@ -74,7 +74,6 @@ At a high level, the structure looks roughly like this:
 ```
 ng-boilerplate/
   |- grunt-tasks/
-  |- karma/
   |- src/
   |  |- app/
   |  |  |- <app logic>
@@ -101,11 +100,10 @@ What follows is a brief description of each entry, but most directories contain
 their own `README.md` file with additional documentation, so browse around to
 learn more.
 
-- `karma/` - test configuration.
 - `src/` - our application sources. [Read more &raquo;](src/README.md)
 - `vendor/` - third-party libraries. [Bower](http://bower.io) will install
   packages here. Anything added to this directory will need to be manually added
-  to `build.config.js` and `karma/karma-unit.js` to be picked up by the build
+  to `build.config.js` to be picked up by the build
   system.
 - `.bowerrc` - the Bower configuration file. This tells Bower to install
   components into the `vendor/` directory.
@@ -133,12 +131,12 @@ Okay, ready to go? Here it is:
 
 `ngBoilerplate` uses [Grunt](http://gruntjs.org) as its build system, so
 [Node.js](http://nodejs.org) is required. Also, Grunt by default no longer comes
-with a command-line utility and Karma and Bower must end up in your global path
+with a command-line utility and Bower must end up in your global path
 for the build system to find it, so they must be installed independently. Once
 you have Node.js installed, you can simply use `npm` to make it all happen:
 
 ```sh
-$ npm -g install grunt-cli karma bower
+$ npm -g install grunt-cli bower
 ```
 
 If you're on Linux (like I am) then throw `sudo` in front of that command.  If
