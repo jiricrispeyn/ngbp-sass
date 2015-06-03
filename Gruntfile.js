@@ -10,13 +10,10 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-conventional-changelog');
   grunt.loadNpmTasks('grunt-bump');
-  grunt.loadNpmTasks('grunt-coffeelint');
-  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-html2js');
 
@@ -204,26 +201,6 @@ module.exports = function ( grunt ) {
     },
 
     /**
-     * `grunt coffee` compiles the CoffeeScript sources. To work well with the
-     * rest of the build, we have a separate compilation task for sources and
-     * specs so they can go to different places. For example, we need the
-     * sources to live with the rest of the copied JavaScript so we can include
-     * it in the final build, but we don't want to include our specs there.
-     */
-    coffee: {
-      source: {
-        options: {
-          bare: true
-        },
-        expand: true,
-        cwd: '.',
-        src: [ '<%= app_files.coffee %>' ],
-        dest: '<%= build_dir %>',
-        ext: '.js'
-      }
-    },
-
-    /**
      * `ngAnnotate` annotates the sources before minifying. That is, it allows us
      * to code without the array syntax.
      */
@@ -303,24 +280,6 @@ module.exports = function ( grunt ) {
     },
 
     /**
-     * `coffeelint` does the same as `jshint`, but for CoffeeScript.
-     * CoffeeScript is not the default in ngBoilerplate, so we're just using
-     * the defaults here.
-     */
-    coffeelint: {
-      src: {
-        files: {
-          src: [ '<%= app_files.coffee %>' ]
-        }
-      },
-      test: {
-        files: {
-          src: [ '<%= app_files.coffeeunit %>' ]
-        }
-      }
-    },
-
-    /**
      * HTML2JS is a Grunt plugin that takes all of your template files and
      * places them into JavaScript files as strings that are added to
      * AngularJS's template cache. This means that the templates too become
@@ -347,22 +306,6 @@ module.exports = function ( grunt ) {
         },
         src: [ '<%= app_files.ctpl %>' ],
         dest: '<%= build_dir %>/templates-common.js'
-      }
-    },
-
-    /**
-     * The Karma configurations.
-     */
-    karma: {
-      options: {
-        configFile: '<%= build_dir %>/karma-unit.js'
-      },
-      unit: {
-        port: 9019,
-        background: true
-      },
-      continuous: {
-        singleRun: true
       }
     },
 
@@ -401,22 +344,6 @@ module.exports = function ( grunt ) {
           '<%= concat.compile_js.dest %>',
           '<%= vendor_files.css %>',
           '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
-        ]
-      }
-    },
-
-    /**
-     * This task compiles the karma template so that changes to its file array
-     * don't have to be managed manually.
-     */
-    karmaconfig: {
-      unit: {
-        dir: '<%= build_dir %>',
-        src: [
-          '<%= vendor_files.js %>',
-          '<%= html2js.app.dest %>',
-          '<%= html2js.common.dest %>',
-          '<%= test_files.js %>'
         ]
       }
     },
@@ -462,18 +389,7 @@ module.exports = function ( grunt ) {
         files: [
           '<%= app_files.js %>'
         ],
-        tasks: [ 'jshint:src', 'karma:unit:run', 'copy:build_appjs' ]
-      },
-
-      /**
-       * When our CoffeeScript source files change, we want to run lint them and
-       * run our unit tests.
-       */
-      coffeesrc: {
-        files: [
-          '<%= app_files.coffee %>'
-        ],
-        tasks: [ 'coffeelint:src', 'coffee:source', 'karma:unit:run', 'copy:build_appjs' ]
+        tasks: [ 'jshint:src', 'copy:build_appjs' ]
       },
 
       /**
@@ -522,21 +438,7 @@ module.exports = function ( grunt ) {
         files: [
           '<%= app_files.jsunit %>'
         ],
-        tasks: [ 'jshint:test', 'karma:unit:run' ],
-        options: {
-          livereload: false
-        }
-      },
-
-      /**
-       * When a CoffeeScript unit test file changes, we only want to lint it and
-       * run the unit tests. We don't want to do any live reloading.
-       */
-      coffeeunit: {
-        files: [
-          '<%= app_files.coffeeunit %>'
-        ],
-        tasks: [ 'coffeelint:test', 'karma:unit:run' ],
+        tasks: [ 'jshint:test' ],
         options: {
           livereload: false
         }
@@ -554,7 +456,7 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'build', 'karma:unit', 'delta' ] );
+  grunt.registerTask( 'watch', [ 'build', 'delta' ] );
 
   /**
    * The default task is to build and compile.
@@ -565,10 +467,9 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'compass:compile',
+    'clean', 'html2js', 'jshint', 'compass:compile',
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-    'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build', 'karmaconfig',
-    'karma:continuous'
+    'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build'
   ]);
 
   /**
@@ -624,24 +525,4 @@ module.exports = function ( grunt ) {
       }
     });
   });
-
-  /**
-   * In order to avoid having to specify manually the files needed for karma to
-   * run, we use grunt to manage the list for us. The `karma/*` files are
-   * compiled as grunt templates for use by Karma. Yay!
-   */
-  grunt.registerMultiTask( 'karmaconfig', 'Process karma config templates', function () {
-    var jsFiles = filterForJS( this.filesSrc );
-
-    grunt.file.copy( 'karma/karma-unit.tpl.js', grunt.config( 'build_dir' ) + '/karma-unit.js', {
-      process: function ( contents, path ) {
-        return grunt.template.process( contents, {
-          data: {
-            scripts: jsFiles
-          }
-        });
-      }
-    });
-  });
-
 };
